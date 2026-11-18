@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+    <name>Halftone</name>
+    <id>org.sandbranch.filter.halftone</id>
+    <param name="tab" type="notebook">
+        <page name="method" gui-text="Method">
+            <param name="method" type="optiongroup" appearance="combo" gui-text="Method:">
+                <option value="floyd-steinberg">Error diffusion: Floyd-Steinberg</option>
+                <option value="jarvis">Error diffusion: Jarvis, Judice, Ninke</option>
+                <option value="stucki">Error diffusion: Stucki</option>
+                <option value="sierra">Error diffusion: Sierra</option>
+                <option value="sierra-lite">Error diffusion: Sierra Lite</option>
+                <option value="atkinson">Error diffusion: Atkinson</option>
+                <option value="ordered">Ordered (Bayer)</option>
+                <option value="threshold">Threshold (50 percent)</option>
+                <option value="screen">Halftone screen (raster)</option>
+                <option value="dots">Halftone dots (vector)</option>
+                <option value="lines">Halftone lines (vector)</option>
+            </param>
+            <param name="dpi" type="float" min="10" max="2400" precision="0" gui-text="Raster: resolution (dpi):" gui-description="One pixel per laser line: 254 dpi is a line interval of 0.1 mm">254</param>
+            <param name="cell" type="float" min="0.05" max="50" precision="2" gui-text="Screen, dots, lines: cell size (mm):">0.5</param>
+            <param name="angle" type="float" min="-180" max="180" precision="1" gui-text="Screen, dots, lines: angle (degrees):">45</param>
+            <param name="spot" type="optiongroup" appearance="combo" gui-text="Screen: dot shape:">
+                <option value="round">Round</option>
+                <option value="diamond">Diamond</option>
+                <option value="square">Square</option>
+                <option value="line">Line</option>
+            </param>
+            <param name="bayer" type="optiongroup" appearance="combo" gui-text="Ordered: matrix:">
+                <option value="8">8 x 8</option>
+                <option value="4">4 x 4</option>
+                <option value="2">2 x 2</option>
+                <option value="16">16 x 16</option>
+            </param>
+            <param name="smallest" type="float" min="0" max="10" precision="2" gui-text="Dots, lines: smallest size (mm):" gui-description="Dots and line parts thinner than this are left out: the smallest mark the laser or pen makes">0.1</param>
+            <param name="color" type="color" gui-text="Dots, lines: colour">0x000000ff</param>
+        </page>
+        <page name="tone" gui-text="Tone">
+            <param name="brightness" type="float" min="-100" max="100" precision="0" gui-text="Brightness:">0</param>
+            <param name="contrast" type="float" min="-100" max="100" precision="0" gui-text="Contrast:">0</param>
+            <param name="gamma" type="float" min="0.1" max="5" precision="2" gui-text="Gamma:" gui-description="Above 1 lightens the middle tones, which lasers tend to burn too dark">1</param>
+            <param name="invert" type="bool" gui-text="Invert (light marks on a dark material)">false</param>
+            <param name="original" type="optiongroup" appearance="combo" gui-text="Original image:">
+                <option value="hide">Hide it</option>
+                <option value="keep">Keep it visible</option>
+                <option value="delete">Delete it</option>
+            </param>
+        </page>
+        <page name="help" gui-text="Help">
+            <label xml:space="preserve">Select images (or nothing, for all of them). The result is drawn over each image, the same size, cropped the same way, and moves with it if grouped.
+
+Raster methods give a black and white picture with one pixel per laser line at the chosen resolution. Error diffusion keeps the most detail; ordered and screens give regular patterns that burn more evenly.
+
+Vector methods give dots or lines whose size follows the image's darkness, as one path: for vector engraving, cutting or pen plotters.
+
+Run it again on the result (or the image) with other settings to replace it.</label>
+        </page>
+    </param>
+    <effect needs-live-preview="true">
+        <object-type>all</object-type>
+        <effects-menu>
+            <submenu name="Images"/>
+        </effects-menu>
+    </effect>
+    <script>
+        <command location="inx" interpreter="python">halftone.py</command>
+    </script>
+</inkscape-extension>
